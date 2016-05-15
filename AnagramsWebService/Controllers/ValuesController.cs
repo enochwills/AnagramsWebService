@@ -9,31 +9,51 @@ namespace AnagramsWebService.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
+        private SortedDictionary<string, List<string>> anagrams = new SortedDictionary<string, List<string>>();
+
+        public ValuesController()
         {
-            return new string[] { "value1", "value2" };
+            string fullPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/wordlist.txt");
+            string[] words = System.IO.File.ReadAllLines(fullPath);
+            foreach (string word in words)
+            {
+                string w = (word.ToLower()).Trim();
+                if (w.Length < 2 || System.Text.RegularExpressions.Regex.IsMatch(w, @"[^a-z]"))
+                    continue;
+                //end if
+
+                string sorted = String.Concat(w.OrderBy(c => c));
+
+                if (anagrams.ContainsKey(sorted))
+                {
+                    List<string> list = anagrams[sorted];
+                    list.Add(w);
+                }
+                else
+                {
+                    List<string> list = new List<string>();
+                    list.Add(w);
+                    anagrams.Add(sorted, list);
+                }//end if
+            }//next
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        public IEnumerable<string> Get(string word)
         {
-            return "value";
-        }
-
-        // POST api/values
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            string w = (word.ToLower()).Trim();
+            if (w.Length < 2 || w.Length > 17 || System.Text.RegularExpressions.Regex.IsMatch(w, @"[^a-z]"))
+                return null;
+            //end if
+            string sorted = String.Concat(w.OrderBy(c => c));
+            if (anagrams.ContainsKey(sorted))
+            {
+                List<string> list = anagrams[sorted];
+                return list.ToArray();
+            }
+            else
+            {
+                return null;
+            }//end if
         }
     }
 }
