@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="apiapp.json" />
+    <None Include="Properties\PublishProfiles\AnagramsHomeWork.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
