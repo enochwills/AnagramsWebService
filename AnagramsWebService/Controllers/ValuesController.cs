@@ -48,7 +48,9 @@ namespace AnagramsWebService.Controllers
             if (anagrams.ContainsKey(sorted))
             {
                 List<string> list = anagrams[sorted];
-                return list.ToArray();
+                List<string> clone = new List<string>(list.ToArray());
+                clone.RemoveAt(clone.IndexOf(w));
+                return clone.ToArray();
             }
             else
             {
