@@ -12,7 +12,7 @@ namespace AnagramsWebService.Tests
         [TestMethod]
         public void TestMethod1()
         {
-            ValuesController controller = new ValuesController();
+            ValuesController controller = new ValuesController(@"c:\\temp\\wordlist.txt");
             for (int i = 1; i < 18; i++)
             {
                 for (int j = 0; j < 1000; j++)

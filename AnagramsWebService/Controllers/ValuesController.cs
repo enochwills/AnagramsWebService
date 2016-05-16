@@ -11,9 +11,8 @@ namespace AnagramsWebService.Controllers
     {
         private SortedDictionary<string, List<string>> anagrams = new SortedDictionary<string, List<string>>();
 
-        public ValuesController()
+        private void init(string fullPath)
         {
-            string fullPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/wordlist.txt");
             string[] words = System.IO.File.ReadAllLines(fullPath);
             foreach (string word in words)
             {
@@ -36,6 +35,15 @@ namespace AnagramsWebService.Controllers
                     anagrams.Add(sorted, list);
                 }//end if
             }//next
+        }
+        public ValuesController()
+        {
+            string fullPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/wordlist.txt");
+            init(fullPath);
+        }
+        public ValuesController(string fullPath)
+        {
+            init(fullPath);
         }
 
         public IEnumerable<string> Get(string word)
